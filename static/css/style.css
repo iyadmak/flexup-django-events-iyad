@@ -267,11 +267,12 @@ form label {
   width: 150px;
 }
 
-/* default height for text area is 200px, minimum is 100px */
+/* default height for text area is 200px, minimum is 100px and a padding of 5px*/
 form textarea {
   height: 100px;
   min-height: 50px;
   max-height: 200px;
+  padding: 5px; 
 }
 
 form input, form select {
