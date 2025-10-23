@@ -186,7 +186,9 @@ class ResponseForm(forms.ModelForm):
 
     def clean_is_waiting_list(self):
         """Convert checkbox 'on' value to boolean"""
-        return self.data.get('is_waiting_list', 'on').lower() == 'on'
+        if self.data.get('is_waiting_list',False) == 'on':
+            return True
+        return False
 
     def clean(self):
         cleaned_data = super().clean()

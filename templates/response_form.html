@@ -50,11 +50,16 @@
             </div>
             
             {% if is_organizer %}
-            <div class="flex items-center">
-                <label class="ml-2 text-sm font-medium text-gray-700" for="{{ response_form.is_waiting_list.id_for_label }}">
+            <div class="flex items-center relative group">
+                <label data-tooltip-traget="tooltip-waiting-list" data-tooltip-placement="right" class="ml-2 text-sm font-medium text-gray-700" for="{{ response_form.is_waiting_list.id_for_label }}">
                     {{ response_form.is_waiting_list.label }}
                 </label>
                 {{ response_form.is_waiting_list }}
+                <div id="tooltip-waiting-list" role="tooltip"
+                class="absolute left-0 top-full mt-1 z-10 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-300 px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-lg dark:bg-gray-700">
+                If this is checked, the guest will be placed on the waiting list. If unchecked, the guest will be confirmed directly.
+                <div class="absolute w-3 h-3 bg-gray-900 rotate-45 -top-1 left-1/2 transform -translate-x-1/2 dark:bg-gray-700"></div>
+            </div>
             </div>
             {% endif %}
             
@@ -101,11 +106,24 @@
         } else {
             if ('{{ is_organizer }}' == 'True'){
                 document.getElementById('text_note').textContent = 'You are adding this response as an organizer. You can set any status and control waiting list placement.';
-            } else {
-                document.getElementById('text_note').textContent = 'You will be added to the waiting list.';
+            
+            // If event requires waiting list, check the waiting list checkbox by default for the organizer
+            if ('{{ event.waiting_list }}' == 'True') { 
+                const waitingListCheckbox = document.querySelector('#response-waiting-list'); 
+                if (waitingListCheckbox) { 
+                    waitingListCheckbox.checked = true; 
+                } 
             }
-            document.getElementById('response-modal-title').textContent = 'Add New Response';
+        }  else {
+            // Only show waiting list message if event requires waiting list for all guests
+                if ('{{ event.waiting_list }}' == 'True') { 
+                    document.getElementById('text_note').textContent = 'You will be added to the waiting list.'; 
+                } else {
+            // Hide the message completely when event doesn't require waiting list 
+                    document.getElementById('text_note').style.display = 'none'; 
+                }
         }
+    }
 
         // Remove any existing submit event listeners to prevent duplicates
         form.removeEventListener('submit', handleFormSubmit);
