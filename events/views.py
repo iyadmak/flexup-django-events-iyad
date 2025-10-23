@@ -190,10 +190,12 @@ def event_manage(request, event_slug, organizer_token):
     event = get_object_or_404(Event, event_slug=event_slug, organizer_token=organizer_token)
     responses = Response.objects.filter(event=event)
     confirmed_responses = event.responses.filter(status=Status.CONFIRMED, is_waiting_list=False)
+    waiting_list_responses = event.responses.filter(status=Status.CONFIRMED, is_waiting_list=True)
     declined_responses = event.responses.filter(Q(status=Status.DECLINED) | Q(status=Status.REJECTED))
     pending_responses = event.responses.exclude(
         Q(id__in=confirmed_responses.values_list('id', flat=True))|
-        Q(id__in=declined_responses.values_list('id', flat=True))
+        Q(id__in=declined_responses.values_list('id', flat=True))|
+        Q(id__in=waiting_list_responses.values_list('id', flat=True))
     )
     
     if request.method == 'POST':
@@ -211,6 +213,7 @@ def event_manage(request, event_slug, organizer_token):
         'response_form': response_form,
         'responses': responses,
         'confirmed_responses': confirmed_responses,
+        'waiting_list_responses': waiting_list_responses,
         'pending_responses': pending_responses,
         'declined_responses': declined_responses,
         'organizer_token': organizer_token,

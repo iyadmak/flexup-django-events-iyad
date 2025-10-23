@@ -11,7 +11,7 @@
                 hx-target="#response-{{ response.response_token }}"
                 hx-swap="outerHTML"
                 hx-trigger="change"
-                onchange="setTimeout(() => window.location.reload(), 100)"
+                onchange="setTimeout(() => window.location.reload(true), 100)"
             >
                 {% for status_value, status_label in response.get_status_choices %}
                     <option value="{{ status_value }}" {% if response.status.value == status_value %}selected{% endif %}>
@@ -63,7 +63,7 @@
                 hx-target="#response-{{ response.response_token }}"
                 hx-swap="outerHTML"
                 hx-trigger="click"
-                onclick="setTimeout(() => window.location.reload(), 100)"
+                onclick="setTimeout(() => window.location.reload(true), 100)"
                 class="{% if response.is_waiting_list %}text-yellow-400 hover:text-yellow-4600{% else %}text-gray-400 hover:text-gray-600{% endif %}  bg-transparent hover:bg-transparent focus:bg-transparent m-0 px-1 py-1 text-sm"
                 title="{% if response.is_waiting_list %}Remove from waiting list{% else %}Add to waiting list{% endif %}"
             >
