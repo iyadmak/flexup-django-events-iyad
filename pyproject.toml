@@ -11,7 +11,7 @@ dependencies = [
     "enum-properties>=2.0.1",
     "nanoid>=2.0.0",
     "psycopg2-binary>=2.9.10",
-    "python-dotenv>=1.0.1",
+    "python-dotenv>=1.2.2",
     "redgreenunittest>=0.1.1",
     "typing-extensions>=4.12.2",
 ]
